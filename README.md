@@ -1,3 +1,9 @@
+# Jim's Device MQTT Go
+Using to drive demo where value sent to DataTopic outside of range of 0-100 triggers the SNMP Red Patlite.  Use CloudMQTT WebSocket UI (user:   jpwhite_tx@yahoo.com) to send
+ {"cmd":"temp","method":"get","name":"MQTT test device","temp":temp value}
+to the DataTopic
+
+
 # Device MQTT Go
 MQTT device service go version. The design is base on [ document](https://github.com/edgexfoundry/edgex-go/blob/master/docs/examples/Ch-ExamplesMQTTDeviceService.rst) .
 

@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"math"
 	"net/url"
-	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -300,42 +299,7 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	var err error
 	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
 	var profileValueType = strings.ToLower(deviceObject.Properties.Value.Type)
-	var readingValueType = reflect.TypeOf(reading).String()
 
-	if readingValueType == "int" {
-		reading = int64(reading.(int))
-	}
-
-	if readingValueType == "uint" {
-		reading = uint64(reading.(uint))
-	}
-
-	// Check and convert reading when it is string type
-	reading, readingValueType, err = handleReadingStringValue(profileValueType, readingValueType, reading)
-	if err != nil {
-		err = fmt.Errorf("parse reading fail. Error: %v", err)
-		driver.Logger.Error(err.Error())
-		return result, err
-	}
-
-	// Check unknown value range
-	if readingValueType == "int" || readingValueType == "uint" || readingValueType == "float32" || readingValueType == "float64" {
-		if !checkValueInRange(profileValueType, readingValueType, reading) {
-			err = fmt.Errorf("parse reading fail. Reading(%v) is out of the value type(%v)'s range", readingValueType, profileValueType)
-			driver.Logger.Error(err.Error())
-			return result, err
-		}
-	} else {
-		// Throw error when value type no need to convert but not matched
-		if profileValueType != readingValueType {
-			err = fmt.Errorf("parse reading fail. Value type not matched. Reading - (%v) , profile - (%v)", readingValueType, profileValueType)
-			driver.Logger.Error(err.Error())
-			return result, err
-		}
-	}
-
-	// Convert int, uint, float to correct value type
-	reading = convertReadingValueType(profileValueType, readingValueType, reading)
 
 	switch profileValueType {
 	case "bool":
@@ -343,21 +307,21 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	case "string":
 		result = sdkModel.NewStringValue(&ro, resTime, reading.(string))
 	case "uint8":
-		result, err = sdkModel.NewUint8Value(&ro, resTime, reading.(uint8))
+		result, err = sdkModel.NewUint8Value(&ro, resTime, uint8(reading.(float64)))
 	case "uint16":
-		result, err = sdkModel.NewUint16Value(&ro, resTime, reading.(uint16))
+		result, err = sdkModel.NewUint16Value(&ro, resTime, uint16(reading.(float64)))
 	case "uint32":
-		result, err = sdkModel.NewUint32Value(&ro, resTime, reading.(uint32))
+		result, err = sdkModel.NewUint32Value(&ro, resTime, uint32(reading.(float64)))
 	case "uint64":
-		result, err = sdkModel.NewUint64Value(&ro, resTime, reading.(uint64))
+		result, err = sdkModel.NewUint64Value(&ro, resTime, uint64(reading.(float64)))
 	case "int8":
-		result, err = sdkModel.NewInt8Value(&ro, resTime, reading.(int8))
+		result, err = sdkModel.NewInt8Value(&ro, resTime, int8(reading.(float64)))
 	case "int16":
-		result, err = sdkModel.NewInt16Value(&ro, resTime, reading.(int16))
+		result, err = sdkModel.NewInt16Value(&ro, resTime, int16(reading.(float64)))
 	case "int32":
-		result, err = sdkModel.NewInt32Value(&ro, resTime, reading.(int32))
+		result, err = sdkModel.NewInt32Value(&ro, resTime, int32(reading.(float64)))
 	case "int64":
-		result, err = sdkModel.NewInt64Value(&ro, resTime, reading.(int64))
+		result, err = sdkModel.NewInt64Value(&ro, resTime, int64(reading.(float64)))
 	case "float32":
 		result, err = sdkModel.NewFloat32Value(&ro, resTime, reading.(float32))
 	case "float64":

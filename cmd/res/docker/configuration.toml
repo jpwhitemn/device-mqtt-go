@@ -3,7 +3,7 @@ Host = "edgex-device-mqtt"
 Port = 49982
 ConnectRetries = 3
 Labels = []
-OpenMsg = "device simple started"
+OpenMsg = "device mqtt started"
 ReadMaxLimit = 256
 Timeout = 5000
 EnableAsyncReadings = true
@@ -51,3 +51,20 @@ FailWaitTime = 10
 EnableRemote = false
 File = "./device-mqtt.log"
 Level = "INFO"
+
+
+# Pre-define Devices
+[[DeviceList]]
+  Name = "MQTT test device"
+  Profile = "Test.Device.MQTT.Profile"
+  Description = "MQTT device is created for test purpose"
+  Labels = [ "MQTT", "test"]
+  [DeviceList.Addressable]
+    name = "CloudMQTT"
+    Protocol = "TCP"
+    Address = "m15.cloudmqtt.com"
+    Port = 15634
+    Publisher = "edgexcommand"
+    user = "rmjbxjjs"
+    password = "srui94pczkfM"
+    topic = "commandtopic"

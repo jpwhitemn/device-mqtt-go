@@ -17,10 +17,10 @@ import (
 )
 
 const (
-	brokerUrl  = "0.0.0.0"
-	brokerPort = 1883
-	username   = "admin"
-	password   = "public"
+	brokerUrl  = "m15.cloudmqtt.com"
+	brokerPort = 15634
+	username   = "rmjbxjjs"
+	password   = "srui94pczkfM"
 )
 
 func main() {
@@ -86,11 +86,11 @@ func runDataSender() {
 
 	var data = make(map[string]interface{})
 	data["name"] = "MQTT test device"
-	data["cmd"] = "randnum"
+	data["cmd"] = "temp"
 	data["method"] = "get"
 
 	for {
-		data["randnum"] = rand.Float64()
+		data["temp"] = rand.Intn(120)
 		jsonData, err := json.Marshal(data)
 		if err != nil {
 			fmt.Println(err)
@@ -116,11 +116,8 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 			sendTestData(request)
 		} else {
 			switch request["cmd"] {
-			case "ping":
-				request["ping"] = "pong"
-				sendTestData(request)
-			case "randnum":
-				request["randnum"] = rand.Float64()
+			case "temp":
+				request["temp"] = rand.Intn(120)
 				sendTestData(request)
 			case "message":
 				request["message"] = "test-message"

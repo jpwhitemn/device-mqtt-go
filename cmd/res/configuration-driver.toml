@@ -1,9 +1,9 @@
 [Incoming]
 Protocol = "tcp"
-Host = "0.0.0.0"
-Port = 1883
-Username = "admin"
-Password = "public"
+Host = "m15.cloudmqtt.com"
+Port = 15634
+Username = "rmjbxjjs"
+Password = "srui94pczkfM"
 Qos = 0
 KeepAlive = 3600
 MqttClientId = "IncomingDataSubscriber"
@@ -11,10 +11,10 @@ Topic = "DataTopic"
 
 [Response]
 Protocol = "tcp"
-Host = "0.0.0.0"
-Port = 1883
-Username = "admin"
-Password = "public"
+Host = "m15.cloudmqtt.com"
+Port = 15634
+Username = "rmjbxjjs"
+Password = "srui94pczkfM"
 Qos = 0
 KeepAlive = 3600
 MqttClientId = "CommandResponseSubscriber"
