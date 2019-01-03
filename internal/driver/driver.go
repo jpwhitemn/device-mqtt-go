@@ -264,6 +264,7 @@ func (d *Driver) handleWriteCommandRequest(deviceClient MQTT.Client, req sdkMode
 
 func (*Driver) Stop(force bool) error {
 	driver.Logger.Info(fmt.Sprintf("Stopping the MQTT Device Service"))
+	return nil
 }
 
 // Create a MQTT client
